@@ -1,51 +1,23 @@
-import React, {ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 
-interface TodoEditProps {
+interface edit {
   onUpdate: (id: number, text: string) => void;
-  selectedTodo: { id: number, text: string };
 }
 
-const TodoEdit: React.FC<TodoEditProps>=({onUpdate, selectedTodo}) => {
 
-  const [value, setValue] = useState<string>('');
+const Todoedit = ({ onUpdate}:edit) => {
 
-  // useEffect(() => {
-  //   if (selectedTodo) {
-  //     setValue(selectedTodo.text);
-  //   }
-  // }, [selectedTodo]);
-
-  console.log(selectedTodo);
-  useEffect(() => {
-    if (selectedTodo) {
-      setValue(selectedTodo.text);
-    }
-  }, [selectedTodo]);
-
-  const onchange = (e: ChangeEvent<HTMLInputElement>) => {
+  console.log(onUpdate);
+  const reserBtn = (e : ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setValue(e.target.value);
-  }
-  
-  
-
-  // const onsubmit = (e) => {
-  //   e.preventDefault();
-  //   setValue('');
-  //   onUpdate(selectedTodo.id, value);
-  // }
-  const onsubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setValue('');
-    onUpdate(selectedTodo.id, value);
 }
+
   return (
-    <form onSubmit={onsubmit}>
-      <input value={value} onChange={onchange}/>
-      <button type='submit'>수정</button>
+    <form onSubmit={reserBtn}>
+      <input />
+      <button>수정</button>
     </form>
   )
 }
 
-
-export default TodoEdit;
+export default Todoedit

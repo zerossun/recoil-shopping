@@ -1,103 +1,75 @@
-import React, {  useEffect, useRef, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import TodoInsert from "./components/TodoInsert";
-import TodoList from './components/TodoList';
-import TodoEdit from './components/TodoEdit';
 
-// import TodoInsert
+import Todoinsert from './components/Todoinsert';
+import Todolist from './components/Todolist';
+import Todoedit from './components/Todoedit';
 
-export interface Todo {
-  id: number;
-  text: string;
-  checked: boolean;
-};
+export interface Todo{
+  id:number,
+  text: string,
+  check: boolean;
+
+}
+
 function App() {
+
+  // const [service, setService] = useState(false);
+  // const [marketing, setMarketing] = useState(false);
+ 
   const [todos, setTodos] = useState<Todo[]>([
     {
       id: 1,
       text: 'example1',
-      checked: true,
+      check: false,
     },
     {
       id: 2,
       text: 'example2',
-      checked: false,
+      check: true,
     },
     {
       id: 3,
       text: 'example3',
-      checked: true,
+      check: false,
     },
-  ])
+  ]);
   
-useEffect(()=>{window.localStorage.setItem('todoItem', JSON.stringify(todos));},[todos])
 
-  //any 쓰기 싫은데 any외에는 다 오류가 먹어서 안됨....
-  const nextId = useRef <number>(4);
+  const [resToggle, setResToggle] = useState<boolean>(false);
   
-  const onInsert = (text:string) => {
-    const todo:Todo = {
-      id: nextId.current,
-      text,
-      checked: false,
-    };
-    // setTodos(todos.concat(todo)) 
-    setTodos(prevTodos => [...prevTodos, todo]);
 
-    nextId.current++;
+  const reserveClick = () => {
+    setResToggle(!resToggle);
+    console.log(resToggle);
   }
 
-  const onToggle = (id: number) => {
-    // setTodos(todos.map((todo) => todo.id === id ? { ...todo, checked: !todo.checked } : todo))
-    setTodos(prevTodo => prevTodo.map((todo) => todo.id === id ? { ...todo, checked: !todo.checked } : todo))
+  const deletetxt = (id: number) => {
+    
+    // !== 두 피연산자가 같지 않거나, 같은 자료형이 아닐 때 true를 반환
+    // 고로 todo.id(3) !== 클릭한 todo의 id가 3일 때 false
+    // false를 제외하고 남은 걸 보여줌
+    setTodos(todos.filter((todo) => todo.id !== id)
+    )
   }
 
-  const onDelete = (id : Number) => {
-    // setTodos(todos.filter((todo) => todo.id !== id))
-    setTodos(prevTodo => prevTodo.filter((todo) => todo.id !== id));
-    localStorage.removeItem('todoItem');
+
+  const onUpdate = (id:number, text: string) => {
+    setTodos(todos.map((todo) => (todo.id === id ? {...todo, text}: todo)))
   }
-
-  //텍스트
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  // 수정버튼
-  const [insertToggle, setInsertToggle] = useState<boolean | ((prevToggle: boolean) => boolean)>(false);
-
-
-  //수정 버튼 토글
-  
-  const onInsertToggle = () => {
-    if (selectedTodo !== null) {
-      setSelectedTodo(null);
-    }
-    setInsertToggle((prevToggle: any) => !prevToggle);
-  };
-
-  // 텍스트 수정 변환
-  // const onchangeSelectedTodo = (todo: React.SetStateAction<null>) => {
-  //   setSelectedTodo(todo);
-  // };
-
-  const onUpdate = (id: number, text: string) => {
-    onInsertToggle();
-    // setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
-    setTodos(prevTodo => prevTodo.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
-  };
-  
- 
 
   return (
     <div>
-      <TodoInsert onInsert={onInsert} />
-      <TodoList
-        todos={todos}
-        onToggle={onToggle}
-        onDelete={onDelete}
-        onchangeSelectedTodo={setSelectedTodo}
-        onInsertToggle={onInsertToggle}
-      />
-      {insertToggle && selectedTodo && <TodoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} />}
+      {/* <Checkbox checked={service} onchange={setService}>서비스 이용약관</Checkbox>
+      <Checkbox checked={marketing} onchange={setMarketing} >마케팅 수신</Checkbox>
+      <button className="px-4 py-2 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700" disabled={!service || !marketing}>회원 가입</button> */}
+      <Todoinsert />
+      <Todolist todos={todos} deletetxt={deletetxt} reserveClick={reserveClick} />
+      {/* 
+      && : resToggle이 true라면 <Todoedit />반환, 아니면 undefind
+       */}
+      {/* {resToggle && <Todoedit />} */}
+      {resToggle ? <Todoedit onUpdate={onUpdate} /> : undefined}
     </div>
   );
 }

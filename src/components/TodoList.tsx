@@ -1,28 +1,22 @@
 import React from 'react'
-import TodoLIstItem from './TodoLIstItem'
-import { Todo } from '../App';
+import TodolistItem from './TodolistItem'
+import type {Todo} from '../App'
 
-interface TodoLIstProps {
-  todos: Todo[];
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
-  onchangeSelectedTodo: (todo: Todo | null) => void;
-  // 특정 항목에 대한 토글 버튼 이므로 딱히 뭘 받을 필요가 없음
-  onInsertToggle: () => void;
+interface list {
+    todos: Todo[],
+    deletetxt: (id: number) => void,
+    reserveClick: () => void;
 }
-;
 
-
-const TodoList: React.FC<TodoLIstProps> = ({ todos, onToggle, onDelete, onchangeSelectedTodo, onInsertToggle }) => {
-   
-  
+const Todolist = ({ todos, deletetxt, reserveClick }:list) => {
   return (
     <ul>
-      {/* odoLIstItem todo={todo}는 TodoLIstItem에서 type을 지정했음.  */}
-      {todos.map((todo) => (<TodoLIstItem todo={todo} key={todo.id} onToggle={onToggle} onDelete={onDelete} onchangeSelectedTodo={onchangeSelectedTodo} onInsertToggle={onInsertToggle } />))}
+          {todos.map((todo) => (
+              <li><TodolistItem todo={todo} deletetxt={deletetxt} reserveClick={reserveClick}/></li>
+        ))}
+      
     </ul>
   )
 }
 
-
-export default TodoList;
+export default Todolist
