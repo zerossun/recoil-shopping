@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { checkboxContext } from './CheckboxContext';
+// import { checkboxContext } from './CheckboxContext';
 
 interface CheckboxGruopProps{
     label: string;
@@ -31,9 +31,9 @@ interface CheckboxGruopProps{
     return (
         <fieldset>
             <legend>{label}</legend>
-            <checkboxContext.Provider value={{ischecked, toggleValue}}>
+            {/* <checkboxContext.Provider value={{ischecked, toggleValue}}>
                 {children}
-            </checkboxContext.Provider>
+            </checkboxContext.Provider> */}
         </fieldset>
     )
 }
